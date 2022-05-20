@@ -1,0 +1,6 @@
+bash_*
+*.sbatch
+logs/
+.vscode/
+checkpoint/
+*__pycache__*
