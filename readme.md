@@ -1,7 +1,7 @@
 # Overview
 This is a repository for the paper ["Learning from Reward-Free Offline Data: A Case for Planning with Latent Dynamics Models"](arxiv.org).
 
-[Website](https://vladisai.github.io/pldm-page/) [Paper](arxiv.org)
+[Website](https://latent-planning.github.io/) [Paper](arxiv.org)
 
 <img src="assets/main_idea.png" width="100%" style="max-width: 640px"><br/>
 
