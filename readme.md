@@ -1,7 +1,7 @@
 # Overview
-This is a repository for the paper ["Learning from Reward-Free Offline Data: A Case for Planning with Latent Dynamics Models"](arxiv.org).
+This is a repository for the paper ["Learning from Reward-Free Offline Data: A Case for Planning with Latent Dynamics Models"](https://arxiv.org/abs/2502.14819).
 
-[Website](https://latent-planning.github.io/) [Paper](arxiv.org)
+[[Website]](https://latent-planning.github.io/) [[Paper]](https://arxiv.org/abs/2502.14819)
 
 <img src="assets/main_idea.png" width="100%" style="max-width: 640px"><br/>
 
