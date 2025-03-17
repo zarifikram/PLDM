@@ -109,7 +109,6 @@ class MPPIPlanner:
         projected_cost: bool = False,
     ):
         device = next(model.parameters()).device
-
         latent_actions = l2 and model.config.predictor.z_dim > 0
         self.model = model
         self.config = config
@@ -121,7 +120,7 @@ class MPPIPlanner:
         self.action_normalizer = action_normalizer
         self.prober = prober
         self.latent_actions = latent_actions
-
+        
         noise_sigma = torch.diag(
             torch.tensor(
                 [config.noise_sigma] * model.predictor.action_dim,
@@ -129,8 +128,8 @@ class MPPIPlanner:
                 device=device,
             )
         )
-        self.objective = objective
 
+        self.objective = objective
         self.mppi_costs = [
             RunningCost(
                 objective,
@@ -235,6 +234,8 @@ class MPPIPlanner:
             flatten_output=False,
         )
 
+        # print(f"pred_encs shape: {pred_encs.shape} pred_obs shape: {pred_obs.shape} actions shape: {actions.permute(1, 0, 2).shape} current_state.shape {current_state.shape}")
+        # exit()
         if self.action_normalizer is not None:
             actions = self.action_normalizer(actions)
 

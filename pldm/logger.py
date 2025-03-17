@@ -60,6 +60,7 @@ class Logger:
                 config=config,
                 settings=wandb.Settings(start_method="fork"),
                 dir=self.output_path,
+                entity="zarifikram",
             )
         self.config: Optional[Dict[str, Any]] = config
         self.save_config()

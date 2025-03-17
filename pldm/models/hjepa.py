@@ -33,6 +33,7 @@ class HJEPA(torch.nn.Module):
     ):
         super().__init__()
         self.config = config
+
         self.level1 = JEPA(
             config.level1,
             input_dim=input_dim,

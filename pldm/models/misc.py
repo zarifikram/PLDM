@@ -156,6 +156,8 @@ PROBER_CONV_LAYERS_CONFIG = {
 
 
 class Prober(torch.nn.Module):
+    # A prober is a model that takes an embedding and outputs a prediction
+    # Useful for probing the learned representations during planning
     def __init__(
         self,
         embedding: int,
@@ -198,7 +200,6 @@ class Prober(torch.nn.Module):
 class Projector(torch.nn.Module):
     def __init__(self, arch: str, embedding: int, random: bool = False):
         super().__init__()
-
         self.arch = arch
         self.embedding = embedding
         self.random = random

@@ -13,8 +13,8 @@ data:
     batch_size: 128
     beta: 0.4
     crop_length: null
-    images_path: /pldm_envs/diverse_maze/presaved_datasets/5maps/images.npy
-    path: /pldm_envs/diverse_maze/presaved_datasets/5maps/data.p
+    images_path: /data/zikram/PLDM/diverse_maze/presaved_datasets/5maps/images.npy
+    path: /data/zikram/PLDM/diverse_maze/presaved_datasets/5maps/data.p
     location_only: false
     normalize: true
     num_workers: 10
@@ -90,17 +90,17 @@ objectives_l1:
     global_coeff: 1.4108
 optimizer_type: Adam
 output_dir: maze2d_small_diverse
-output_root: /pldm/checkpoints
+output_root: /data/zikram/PLDM/pldm/checkpoints
 eval_cfg:
   env_name: *env_name
   log_heatmap: false
   eval_l1: true
   probing:
     l1_depth: *n_steps
-    train_images_path: /pldm_envs/diverse_maze/presaved_datasets/40maps_eval/images.npy
-    train_path: /pldm_envs/diverse_maze/presaved_datasets/40maps_eval/data.p
-    val_images_path: /pldm_envs/diverse_maze/presaved_datasets/40maps_eval/images.npy
-    val_path: /pldm_envs/diverse_maze/presaved_datasets/40maps_eval/data.p
+    train_images_path: /data/zikram/PLDM/diverse_maze/presaved_datasets/40maps_eval/images.npy
+    train_path: /data/zikram/PLDM/diverse_maze/presaved_datasets/40maps_eval/data.p
+    val_images_path: /data/zikram/PLDM/diverse_maze/presaved_datasets/40maps_eval/images.npy
+    val_path: /data/zikram/PLDM/diverse_maze/presaved_datasets/40maps_eval/data.p
     probe_targets: 'locations,propio_vel'
     locations:
       arch: 'conv'
@@ -139,14 +139,14 @@ eval_cfg:
       override_config: true
     log_pred_dist_every: 9999999
     plot_every: 16
-    set_start_target_path: "/pldm_envs/diverse_maze/presaved_datasets/40maps_eval/trials.pt"
+    set_start_target_path: "/data/zikram/PLDM/diverse_maze/presaved_datasets/40maps_eval/trials.pt"
     action_repeat: 4
     action_repeat_mode: 'id'
     img_size: 64
     replan_every: 4
     image_obs: true
     stack_states: 1
-    data_path: '/pldm_envs/diverse_maze/presaved_datasets/40maps_eval/'
+    data_path: '/data/zikram/PLDM/diverse_maze/presaved_datasets/40maps_eval/'
     level1:
       planner_type: PlannerType.MPPI
       min_step: 0
@@ -165,8 +165,8 @@ eval_cfg:
     position_only: true
 quick_debug: false
 run_group: test
-run_name: test
+run_name: eval_MPC
 run_project: HJEPA-maze
 save_every_n_epochs: 1
 seed: 246
-wandb: true
+wandb: false

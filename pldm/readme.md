@@ -18,6 +18,7 @@ python train.py --config configs/wall/icml/seqlen90_3M.yaml --values base_lr=0.0
 The following command runs JEPA training on the 5 maps setting. Full list of configs can be found in `configs/diverse_maze/icml/`. 
 
 ```
+python train.py --config configs/diverse_maze/icml/small_diverse_40maps.yaml
 python train.py --config configs/diverse_maze/icml/small_diverse_5maps.yaml
 ```
 

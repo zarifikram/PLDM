@@ -59,7 +59,6 @@ class JEPA(torch.nn.Module):
         self.l2 = l2
 
         self.spatial_repr_dim = self.backbone.output_dim
-
         if isinstance(self.spatial_repr_dim, tuple):
             self.repr_dim = reduce(operator.mul, self.spatial_repr_dim)
         else:
@@ -75,7 +74,7 @@ class JEPA(torch.nn.Module):
                 param.requires_grad = False
         else:
             self.backbone_ema = None
-
+        
         if l2:
             if config.predictor.posterior_input_type == "term_states":
                 config.predictor.posterior_input_dim = self.repr_dim * 2
@@ -88,14 +87,12 @@ class JEPA(torch.nn.Module):
         assert (self.config.action_dim or self.config.predictor.z_dim) and not (
             self.config.action_dim and self.config.predictor.z_dim
         )
-
+        # print(f"l2 {l2} action dim {self.config.action_dim} z dim {self.config.predictor.z_dim} repr dim {self.repr_dim} output dim {self.backbone.output_dim}")
         predictor_input_dim = self.config.action_dim + self.config.predictor.z_dim
 
         self.config.predictor.rnn_state_dim = self.repr_dim
-
         # predictor.tie_backbone_ln ==> backbone.final_ln
         assert not config.predictor.tie_backbone_ln or config.backbone.final_ln
-
         self.predictor = build_predictor(
             config.predictor,
             repr_dim=self.backbone.output_dim,

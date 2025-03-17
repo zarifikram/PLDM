@@ -113,7 +113,7 @@ class MPPI:
 
         if self.U is None:
             self.U = self.noise_dist.sample((self.T,))
-
+        
         self.step_dependency = step_dependent_dynamics
         self.F = dynamics
         self.running_cost = running_cost
@@ -215,7 +215,7 @@ class MPPI:
         cost_total = torch.zeros(K, device=self.d, dtype=self.dtype)
         cost_samples = cost_total.repeat(self.M, 1)
         cost_var = torch.zeros_like(cost_total)
-
+    
         # allow propagation of a sample of states (ex. to carry a distribution), or to start with a single state
         if self.state.shape == (K, self.nx):
             state = self.state
@@ -268,12 +268,14 @@ class MPPI:
         noise = self.noise_dist.rsample((self.K, self.T))
         # broadcast own control to noise over samples; now it's K x T x nu
         perturbed_action = self.U + noise
+
         if self.sample_null_action:
             perturbed_action[self.K - 1] = 0
         # naively bound control
         self.perturbed_action = self._bound_action(perturbed_action)
         # bounded noise after bounding (some got cut off, so we don't penalize that in action cost)
         self.noise = self.perturbed_action - self.U
+
         if self.noise_abs_cost:
             action_cost = self.lambda_ * torch.abs(self.noise) @ self.noise_sigma_inv
             # NOTE: The original paper does self.lambda_ * torch.abs(self.noise) @ self.noise_sigma_inv, but this biases

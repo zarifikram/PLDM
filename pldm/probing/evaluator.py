@@ -179,7 +179,6 @@ class ProbingEvaluator:
         """
         Probes whether the predicted embeddings capture the future locations
         """
-
         level = "l1"
 
         plot_prefix = f"{level}_{epoch}"
@@ -209,7 +208,6 @@ class ProbingEvaluator:
                 predictor=model.predictor,
                 conv_input=probe_target_cfg.arch == "conv",
             )
-
             prober = Prober(
                 prober_input_dim,
                 arch=probe_target_cfg.arch,
@@ -224,6 +222,7 @@ class ProbingEvaluator:
             ckpt_path = self._infer_prober_path(
                 probe_target=probe_target, epoch=epoch, level=level
             )
+
             if config.load_prober:
                 prober_ckpt = torch.load(ckpt_path)
                 prober.load_state_dict(prober_ckpt["state_dict"])
@@ -241,7 +240,7 @@ class ProbingEvaluator:
         if config.full_finetune:
             model.train()
             all_parameters += list(model.parameters())
-
+        
         optimizer_pred_prober = torch.optim.Adam(all_parameters, config.lr)
 
         sample_step = 0
@@ -269,6 +268,7 @@ class ProbingEvaluator:
 
         for epoch in tqdm(range(epochs), desc=f"Probe {level} prediction epochs"):
             for batch in tqdm(dataset, desc="Probe prediction step"):
+
                 # put time first
                 states = batch.states.cuda().transpose(0, 1)
                 actions = batch.actions.cuda().transpose(0, 1)
@@ -348,6 +348,9 @@ class ProbingEvaluator:
 
                 if self.quick_debug:
                     break
+
+                # TODO: Remember to uncomment this
+                break
 
         if config.full_finetune:  # we save the finetuned model as well
             model_ckpt_path = ckpt_path.replace("prober", "finetuned_model")
@@ -457,6 +460,9 @@ class ProbingEvaluator:
 
             if quick_debug and idx > 2:
                 break
+            
+            # TODO: Remember to uncomment this
+            break
 
         repr_loss = torch.stack(eval_repr_losses).mean(dim=0)
         target_repr_losses = torch.stack(target_repr_losses).mean(dim=0)
@@ -759,7 +765,6 @@ class ProbingEvaluator:
             )
             plt.xlim(0, x_max)
             plt.ylim(y_max, 0)
-
             if not notebook:
                 Logger.run().log_figure(fig, f"{name_prefix}/prober_predictions_{i}")
                 plt.close(fig)

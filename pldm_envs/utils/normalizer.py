@@ -83,7 +83,6 @@ class Normalizer:
         all_states = []
         all_propio_pos = []
         all_propio_vel = []
-
         config = (
             dataset.dataset.config if hasattr(dataset, "dataset") else dataset.config
         )

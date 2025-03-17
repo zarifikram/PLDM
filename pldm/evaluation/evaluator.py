@@ -202,12 +202,11 @@ class Evaluator:
         log_dict = {}
 
         self.probers, self.probers_l2 = self.evaluate_loc_probing()
-
+        
         # Planning
         if not self.config.disable_planning:
             if self.config.eval_l1:
                 levels, level_configs = self._get_planning_levels()
-
                 for i, level in enumerate(levels):
                     level_config = level_configs[i]
 

@@ -170,7 +170,6 @@ class MeNet6(SequenceBackbone):
         input_dim: int,
     ):
         super().__init__()
-
         self.config = config
         subclass = config.backbone_subclass
         layers_config = ENCODER_LAYERS_CONFIG[subclass]
@@ -411,6 +410,7 @@ def build_backbone(
 ):
     backbone, embedding = None, None
     arch = config.arch
+
 
     if arch == "resnet18" or "resnet18s" in arch:
         backbone, embedding = resnet.__dict__[arch](

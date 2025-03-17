@@ -122,7 +122,6 @@ def make_dataloader(ds, loader_config, normalizer=None, suffix="", train=True):
         pin_memory=False,
     )
     loader.config = config
-
     if loader_config.normalize:
         if normalizer is None:
             normalizer = Normalizer.build_normalizer(

@@ -1,10 +1,12 @@
 # This file downloads the original datasets and render them
 
 # Where the datasets will be saved. CHANGE TO YOUR OWN.
-OUTPUT_PATH_ROOT=/vast/wz1232
+OUTPUT_PATH_ROOT=/data/zikram/
+export http_proxy=http://127.0.0.1:1080
+export https_proxy=http://127.0.0.1:1087
 
 # Root path of the project. CHANGE TO YOUR OWN.
-PROJECT_ROOT=/scratch/wz1232/PLDM/pldm_envs/diverse_maze
+PROJECT_ROOT=/data/zikram/PLDM/diverse_maze/
 
 # download for 40maps
 gdown "https://drive.google.com/uc?id=1KIb-d-aUODYBA8ujsPJjiCPWbuB8Ny85" -O "${PROJECT_ROOT}/presaved_datasets/40maps/data.p"
@@ -31,8 +33,8 @@ DATA_PATHS=(
 
 # render the datasets. save images as numpy
 for DATA_PATH in "${DATA_PATHS[@]}"; do
-    python render_data.py --data_path "$DATA_PATH"
-    python postprocess_images.py --data_path "$DATA_PATH"
+    python data_generation/render_data.py --data_path "$DATA_PATH"
+    python data_generation/postprocess_images.py --data_path "$DATA_PATH"
 
     # optional: also transform the data into format compatible with ogbench (https://github.com/seohongpark/ogbench)
     # python prepare_npz.py --data_path "$DATA_PATH"

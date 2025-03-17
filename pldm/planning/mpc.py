@@ -57,7 +57,6 @@ class MPCEvaluator(ABC):
 
     def _construct_planner(self, n_envs: int):
         config = self.config
-
         objective = objectives_v2.ReprTargetMPCObjective(
             model=self.model,
             propio_cost=config.level1.propio_cost,
@@ -65,7 +64,6 @@ class MPCEvaluator(ABC):
             loss_coeff_first=config.level1.loss_coeff_first,
             loss_coeff_last=config.level1.loss_coeff_last,
         )
-
         action_normalizer = lambda x: normalize_actions(
             x,
             min_norm=config.level1.min_step,
@@ -203,6 +201,7 @@ class MPCEvaluator(ABC):
         final_preds_dist_history = []
 
         init_infos = [e.get_info() for e in envs]
+
         if "location" in init_infos[0]:
             location_history.append(np.array([info["location"] for info in init_infos]))
 
@@ -251,7 +250,6 @@ class MPCEvaluator(ABC):
                 .detach()
                 .cpu()
             )
-
             if self.config.random_actions:
                 results = [
                     envs[j].step(envs[0].action_space.sample())

@@ -137,8 +137,9 @@ class ImpalaEncoder(SequenceBackbone):
         return out
 
 
+# import torch
 # encoder = ImpalaEncoder(final_ln=True)
 
-# test_input = torch.randn(1, 2, 64, 64)
+# test_input = torch.randn(1, 2, 65, 65)
 
-# print(encoder(test_input).shape)
+# print(encoder(test_input).encodings.shape)

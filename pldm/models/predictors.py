@@ -219,6 +219,7 @@ class SequencePredictor(torch.nn.Module):
         posterior_logits = torch.stack(posterior_logits) if posterior_logits else None
         posteriors = torch.stack(posteriors) if posteriors else None
 
+
         if self.pred_propio_dim:
             if isinstance(self.pred_propio_dim, int):
                 obs_component = state_predictions[:, :, : -self.pred_propio_dim]

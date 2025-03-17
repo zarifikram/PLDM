@@ -42,6 +42,7 @@ class EnvsGenerator:
         self.unique_shortest_path = unique_shortest_path
         self.normalizer = normalizer
 
+
     def _sample_nearby_location(
         self, anchor, map_key, min_block_radius=-1, max_block_radius=3
     ):
@@ -77,6 +78,7 @@ class EnvsGenerator:
         mode=None,
     ):
         if map_idx is not None:
+            
             env_name = f"{self.env_name}_{map_idx}"
             env = ant_draw.load_environment(
                 name=env_name, map_key=map_key, block_dist=block_dist, turns=turns

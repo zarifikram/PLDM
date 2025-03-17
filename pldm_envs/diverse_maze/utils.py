@@ -473,7 +473,6 @@ def load_uniform(env_name, data_path):
     Return:
         dict (map_idx: numpy(frames, obs_dim))
     """
-
     shape = None
     if "ant" in env_name.lower():
         shape = 29

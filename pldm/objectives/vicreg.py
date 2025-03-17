@@ -110,7 +110,7 @@ class VICRegObjective(torch.nn.Module):
         flat_encodings = flatten_conv_output(encodings)
 
         std_loss = self.std_loss(flat_encodings[:1])
-
+        
         if self.config.cov_per_feature:
             T, B, ch, h, w = encodings.shape
             # reshape (1, bs, ch, h, w) --> (h*w, bs, ch)
@@ -160,7 +160,6 @@ class VICRegObjective(torch.nn.Module):
             and self.config.std_coeff_t
         ):
             std = torch.sqrt(x.var(dim=1) + 0.0001)
-
             std_margin = (
                 self.config.std_margin_t if across_time else self.config.std_margin
             )
@@ -175,7 +174,6 @@ class VICRegObjective(torch.nn.Module):
         num_features = x.shape[-1]
 
         x = x - x.mean(dim=1, keepdim=True)
-
         if (
             not across_time
             and self.config.cov_coeff
@@ -185,7 +183,6 @@ class VICRegObjective(torch.nn.Module):
             cov = torch.einsum("bki,bkj->bij", x, x) / (batch_size - 1)
             diagonals = torch.einsum("bii->bi", cov).pow(2).sum(dim=-1)
             # cov shape is TxDxD
-
             cov_loss = (cov.pow(2).sum(dim=[-1, -2]) - diagonals).div(num_features)
             if self.config.adjust_cov:
                 cov_loss = cov_loss / (

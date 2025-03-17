@@ -12,6 +12,10 @@ import random
 import time
 from omegaconf import MISSING
 
+
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1087"
+
 import torch
 import numpy as np
 from tqdm.auto import tqdm
@@ -31,8 +35,6 @@ from pldm.data.utils import get_optional_fields
 from pldm.optimizers.schedulers import Scheduler, LRSchedule
 from pldm.optimizers.optimizer_factory import OptimizerFactory, OptimizerType
 from pldm.evaluation.evaluator import EvalConfig, Evaluator
-
-# if "AMD" not in torch.cuda.get_device_name(0):
 
 from pldm.models.hjepa import HJEPA, HJEPAConfig
 
@@ -174,9 +176,7 @@ class Trainer:
             probing_cfg=config.eval_cfg.probing,
             disable_l2=config.hjepa.disable_l2,
         ).create_datasets()
-
         self.datasets = datasets
-
         self.ds = datasets.ds
         self.val_ds = datasets.val_ds
 
@@ -186,7 +186,6 @@ class Trainer:
         print("Inferred input_dim:", input_dim)
         if len(input_dim) == 1:
             input_dim = input_dim[0]
-
         # check if proprioceptive states are used
         use_propio_pos = (
             hasattr(sample_data, "propio_pos")
@@ -198,7 +197,6 @@ class Trainer:
             and sample_data.propio_vel is not None
             and bool(sample_data.propio_vel.shape[-1])
         )
-
         # create model
         self.model = HJEPA(
             config.hjepa,
@@ -217,7 +215,6 @@ class Trainer:
         # other stuff...
 
         load_result = self.maybe_load_model()
-
         if (
             config.eval_only
             and not config.eval_cfg.probing.full_finetune
@@ -226,14 +223,13 @@ class Trainer:
             print("WARN: probing a random network. Is that intentional?")
 
         assert not (self.config.hjepa.train_l1 and self.config.hjepa.freeze_l1)
-
         if self.config.hjepa.freeze_l1:
             print("freezing first level weights")
             for m in self.model.level1.modules():
                 for p in m.parameters():
                     p.requires_grad = False
 
-        print(self.model)
+        # print(self.model)
         self.n_parameters = sum(
             p.numel() for p in self.model.parameters() if p.requires_grad
         )
@@ -260,7 +256,6 @@ class Trainer:
         )
 
         self.metric_tracker = MetricTracker(window_size=100)
-
         if self.config.compile_model:
             print("compiling model")
             c_time = time.time()
@@ -356,7 +351,6 @@ class Trainer:
                     data_time = start_time - end_time
                 else:
                     data_time = None
-
                 # move to cuda and swap batch and time
                 s = batch.states.cuda().transpose(0, 1)
                 a = batch.actions.cuda().transpose(0, 1)
@@ -430,10 +424,14 @@ class Trainer:
                 self.metric_tracker.update("log_time", time.time() - log_start_time)
                 end_time = time.time()
 
-            if (
-                self.epoch % self.config.save_every_n_epochs == 0 and self.epoch > 0
-            ) or self.epoch >= self.config.epochs:
-                self.save_model()
+                # TODO: remember to uncomment this
+                break
+
+            # TODO: remember to uncomment this
+            # if (
+            #     self.epoch % self.config.save_every_n_epochs == 0 and self.epoch > 0
+            # ) or self.epoch >= self.config.epochs:
+            #     self.save_model() 
 
             if (
                 self.epoch % self.config.eval_every_n_epochs == 0
@@ -445,7 +443,6 @@ class Trainer:
     def eval_on_objectives(self):
         if self.val_ds is None:
             return
-
         losses = {}
 
         for step, batch in tqdm(enumerate(self.val_ds)):
@@ -497,7 +494,6 @@ class Trainer:
 
         # evals on the same objectives used for training
         self.eval_on_objectives()
-
         # create evaluator (for both probing and planning)
         self.evaluator = Evaluator(
             config=self.config.eval_cfg,
@@ -511,6 +507,7 @@ class Trainer:
             output_path=self.config.output_path,
             data_config=self.config.data.wall_config,  # TODO: refactor name to data_config
         )
+
 
         log_dict = self.evaluator.evaluate()
         log_dict["custom_step"] = self.step

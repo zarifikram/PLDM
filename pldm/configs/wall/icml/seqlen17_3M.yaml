@@ -10,7 +10,7 @@ data:
   offline_wall_config:
     n_steps: *n_steps
     use_offline: true
-    offline_data_path: "/pldm_envs/wall/presaved_datasets/wall-visual-config_rand_expert_len=17_3M-v0.npz"
+    offline_data_path: "/data/zikram/PLDM/wall/rendered/len_17.npz"
     lazy_load: false
     batch_size: 64
     device: cuda
@@ -115,7 +115,7 @@ objectives_l1:
     use_pred: false
 optimizer_type: Adam
 output_dir: test
-output_root: /pldm/checkpoints
+output_root: /data/zikram/PLDM/pldm/checkpoints
 eval_cfg:
   env_name: *env_name
   log_heatmap: false
@@ -174,7 +174,7 @@ eval_cfg:
     l1_depth: *n_steps
     sample_timesteps: 30
 quick_debug: false
-run_name: test
+run_name: seqlen17_3M
 run_project: HJEPA-wall
 seed: 101
 wandb: true
